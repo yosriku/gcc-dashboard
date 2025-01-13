@@ -1,151 +1,209 @@
+from streamlit_echarts import st_echarts
 import streamlit as st
-import pandas as pd
-import math
-from pathlib import Path
 
-# Set the title and favicon that appear in the Browser's tab bar.
-st.set_page_config(
-    page_title='GDP dashboard',
-    page_icon=':earth_americas:', # This is an emoji shortcode. Could be a URL too.
-)
+st.set_page_config(layout="wide")
+col1, col2, col3, col4, col5=st.beta_columns([0.2, 1, 0.2, 1, 0.2])
+with col1:
+    st.empty()
+with col2:
+    option = {
+        "tooltip": {
+            "formatter": '{a} <br/>{b} : {c}%'
+        },
+        "series": [{
+            "name": '进度',
+            "type": 'gauge',
+            "startAngle": 180,
+            "endAngle": 0,
+            "progress": {
+                "show": "true"
+            },
+            "radius":'100%', 
 
-# -----------------------------------------------------------------------------
-# Declare some useful functions.
-
-@st.cache_data
-def get_gdp_data():
-    """Grab GDP data from a CSV file.
-
-    This uses caching to avoid having to read the file every time. If we were
-    reading from an HTTP endpoint instead of a file, it's a good idea to set
-    a maximum age to the cache with the TTL argument: @st.cache_data(ttl='1d')
-    """
-
-    # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
-    DATA_FILENAME = Path(__file__).parent/'data/gdp_data.csv'
-    raw_gdp_df = pd.read_csv(DATA_FILENAME)
-
-    MIN_YEAR = 1960
-    MAX_YEAR = 2022
-
-    # The data above has columns like:
-    # - Country Name
-    # - Country Code
-    # - [Stuff I don't care about]
-    # - GDP for 1960
-    # - GDP for 1961
-    # - GDP for 1962
-    # - ...
-    # - GDP for 2022
-    #
-    # ...but I want this instead:
-    # - Country Name
-    # - Country Code
-    # - Year
-    # - GDP
-    #
-    # So let's pivot all those year-columns into two: Year and GDP
-    gdp_df = raw_gdp_df.melt(
-        ['Country Code'],
-        [str(x) for x in range(MIN_YEAR, MAX_YEAR + 1)],
-        'Year',
-        'GDP',
-    )
-
-    # Convert years from string to integers
-    gdp_df['Year'] = pd.to_numeric(gdp_df['Year'])
-
-    return gdp_df
-
-gdp_df = get_gdp_data()
-
-# -----------------------------------------------------------------------------
-# Draw the actual page
-
-# Set the title that appears at the top of the page.
-'''
-# :earth_americas: GDP dashboard
-
-Browse GDP data from the [World Bank Open Data](https://data.worldbank.org/) website. As you'll
-notice, the data only goes to 2022 right now, and datapoints for certain years are often missing.
-But it's otherwise a great (and did I mention _free_?) source of data.
-'''
-
-# Add some spacing
-''
-''
-
-min_value = gdp_df['Year'].min()
-max_value = gdp_df['Year'].max()
-
-from_year, to_year = st.slider(
-    'Which years are you interested in?',
-    min_value=min_value,
-    max_value=max_value,
-    value=[min_value, max_value])
-
-countries = gdp_df['Country Code'].unique()
-
-if not len(countries):
-    st.warning("Select at least one country")
-
-selected_countries = st.multiselect(
-    'Which countries would you like to view?',
-    countries,
-    ['DEU', 'FRA', 'GBR', 'BRA', 'MEX', 'JPN'])
-
-''
-''
-''
-
-# Filter the data
-filtered_gdp_df = gdp_df[
-    (gdp_df['Country Code'].isin(selected_countries))
-    & (gdp_df['Year'] <= to_year)
-    & (from_year <= gdp_df['Year'])
-]
-
-st.header('GDP over time', divider='gray')
-
-''
-
-st.line_chart(
-    filtered_gdp_df,
-    x='Year',
-    y='GDP',
-    color='Country Code',
-)
-
-''
-''
+            "itemStyle": {
+                "color": '#58D9F9',
+                "shadowColor": 'rgba(0,138,255,0.45)',
+                "shadowBlur": 10,
+                "shadowOffsetX": 2,
+                "shadowOffsetY": 2,
+                "radius": '55%',
+            },
+            "progress": {
+                "show": "true",
+                "roundCap": "true",
+                "width": 15
+            },
+            "pointer": {
+                "length": '60%',
+                "width": 8,
+                "offsetCenter": [0, '5%']
+            },
+            "detail": {
+                "valueAnimation": "true",
+                "formatter": '{value}%',
+                "backgroundColor": '#58D9F9',
+                "borderColor": '#999',
+                "borderWidth": 4,
+                "width": '60%',
+                "lineHeight": 20,
+                "height": 20,
+                "borderRadius": 188,
+                "offsetCenter": [0, '40%'],
+                "valueAnimation": "true",
+            },
+            "data": [{
+                "value": 66.66,
+                "name": '百分比'
+            }]
+        }]
+    };
 
 
-first_year = gdp_df[gdp_df['Year'] == from_year]
-last_year = gdp_df[gdp_df['Year'] == to_year]
+    st_echarts(options=option, key="1")
 
-st.header(f'GDP in {to_year}', divider='gray')
 
-''
+    option = {
+    "tooltip": {
+        "trigger": 'item'
+    },
+    "legend": {
+        "top": '5%',
+        "left": 'center'
+    },
+    "series": [
+        {
+            "name": '访问来源',
+            "type": 'pie',
+            "radius": ['40%', '75%'],
+            "avoidLabelOverlap": "false",
+            "itemStyle": {
+                "borderRadius": "10",
+                "borderColor": '#fff',
+                "borderWidth": "2"
+            },
+            "label": {
+                "show": "false",
+                "position": 'center'
+            },
+            "emphasis": {
+                "label": {
+                    "show": "true",
+                    "fontSize": '20',
+                    "fontWeight": 'bold'
+                }
+            },
+            "labelLine": {
+                "show": "true"
+            },
+            "data": [
+                {"value": 1048, "name": '搜索引擎'},
+                {"value": 735, "name": '直接访问'},
+                {"value": 580, "name": '邮件营销'},
+                {"value": 484, "name": '联盟广告'},
+                {"value": 300, "name": '视频广告'}
+            ]
+        }
+    ]
+};
 
-cols = st.columns(4)
+    st_echarts(options=option, key="2")
 
-for i, country in enumerate(selected_countries):
-    col = cols[i % len(cols)]
+with col3:
+    st.empty()
 
-    with col:
-        first_gdp = first_year[first_year['Country Code'] == country]['GDP'].iat[0] / 1000000000
-        last_gdp = last_year[last_year['Country Code'] == country]['GDP'].iat[0] / 1000000000
+with col4:
+    option = {
+    "legend": {
+        "top": 'top'
+    },
+    "toolbox": {
+        "show": "true",
+        "feature": {
+            "mark": {"show": "true"},
+            "dataView": {"show": "true", "readOnly": "false"},
+            "restore": {"show": "true"},
+            
+        }
+    },
+    "series": [
+        {
+            "name": '面积模式',
+            "type": 'pie',
+            "radius": ["30", "120"],
+            "center": ['50%', '60%'],
+            "roseType": 'area',
+            "itemStyle": {
+                "borderRadius": "8"
+            },
+            "data": [
+                {"value": 40, "name": '苹果'},
+                {"value": 38, "name": '梨子'},
+                {"value": 32, "name": '香蕉'},
+                {"value": 30, "name": '桃子'},
+                {"value": 28, "name": '葡萄'},
+                {"value": 26, "name": '芒果'},
+                {"value": 22, "name": '李子'},
+                {"value": 18, "name": '菠萝'}
+            ]
+        }
+    ],
+    "tooltip": {
+                    "show": "true"
+                },
+    "label": {
+        "show":"true"
+    },
+};
 
-        if math.isnan(first_gdp):
-            growth = 'n/a'
-            delta_color = 'off'
-        else:
-            growth = f'{last_gdp / first_gdp:,.2f}x'
-            delta_color = 'normal'
 
-        st.metric(
-            label=f'{country} GDP',
-            value=f'{last_gdp:,.0f}B',
-            delta=growth,
-            delta_color=delta_color
-        )
+    st_echarts(options=option, key="3")
+
+    option = {
+        "toolbox": {
+        "show": "true",
+        "feature": {
+          "dataZoom": {
+            "yAxisIndex": "none"
+          },
+          "dataView": {
+            "readOnly": "false"
+          },
+          "magicType": {
+            "type": ["line", "bar"]
+          },
+          "restore": {"show":"true"},
+        }
+      },
+        "xAxis": {
+            "type": 'category',
+            "data": ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        "yAxis": {
+            "type": 'value'
+        },
+        "series": [{
+            "data": [
+                {"value":900, "itemStyle":{"color":"#FF0000"}}, 
+                {"value":750, "itemStyle":{"color":"#FF7D00"}},
+                {"value":520, "itemStyle":{"color":"#FFFF00"}},
+                {"value":350, "itemStyle":{"color":"#00FF00"}},
+                {"value":200, "itemStyle":{"color":"#0000FF"}},
+                {"value":130, "itemStyle":{"color":"#00FFFF"}},
+                {"value":70, "itemStyle":{"color":"#FF00FF"}},
+                ],
+            "type": 'bar'
+
+        }],
+        "tooltip": {
+                        "show": "true"
+                    },
+        "label": {
+            "show":"true"
+        },
+        
+                        
+        };
+    st_echarts(options=option, key="4")
+
+with col5:
+    st.empty()
