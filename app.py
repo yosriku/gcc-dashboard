@@ -17,7 +17,7 @@ def main():
     data = load_data()
 
     # Create a pie chart for the progress
-    st.write("### Pie Chart of Progress Belajar Percentage")
+    st.write("### Persentase Progress Belajar")
 
     # Calculate the counts for each progress category
     progress_counts = data['Remark Progress Belajar'].value_counts()
@@ -35,14 +35,14 @@ def main():
     st.pyplot(fig)
 
     # Add interactivity: Allow user to filter data based on 'Remark Progress Belajar'
-    st.write("### Filter Data by Progress Remark")
-    selected_remark = st.selectbox("Select a Progress Remark", data['Remark Progress Belajar'].unique())
+    st.write("### Filter Data Berdasarkan Progress")
+    selected_remark = st.selectbox("Pilih progress belajar", data['Remark Progress Belajar'].unique())
 
     # Filter the data based on the selected remark
     filtered_data = data[data['Remark Progress Belajar'] == selected_remark]
 
     # Display the filtered data
-    st.write(f"### Data for {selected_remark}")
+    st.write(f"### Data untuk {selected_remark}")
     st.write(filtered_data)
 
 # Run the app
