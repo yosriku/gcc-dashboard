@@ -1,71 +1,50 @@
-import inspect
-import textwrap
-
 import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
 
-from demo_echarts import ST_DEMOS
-from demo_pyecharts import ST_PY_DEMOS
+# Load the data from the CSV file
+@st.cache_data
+def load_data():
+    data = pd.read_csv('data.csv')
+    data = data[['Nama Peserta', 'Jumlah Course yang Telah Diselesaikan', 'Progress Belajar Percentage','Remark Progress Belajar']]
+    return data
 
-
+# Main function to run the Streamlit app
 def main():
-    st.title("Streamlit ECharts Demo")
+    st.title("Progress Belajar Peserta Advanced Data Analytics")
 
-    with st.sidebar:
-        st.header("Configuration")
-        api_options = ("echarts", "pyecharts")
-        selected_api = st.selectbox(
-            label="Choose your preferred API:",
-            options=api_options,
-        )
+    # Load the data
+    data = load_data()
 
-        page_options = (
-            list(ST_PY_DEMOS.keys())
-            if selected_api == "pyecharts"
-            else list(ST_DEMOS.keys())
-        )
-        selected_page = st.selectbox(
-            label="Choose an example",
-            options=page_options,
-        )
-        demo, url = (
-            ST_DEMOS[selected_page]
-            if selected_api == "echarts"
-            else ST_PY_DEMOS[selected_page]
-        )
+    # Create a pie chart for the progress
+    st.write("### Pie Chart of Progress Belajar Percentage")
 
-        if selected_api == "echarts":
-            st.caption(
-                """ECharts demos are extracted from https://echarts.apache.org/examples/en/index.html, 
-            by copying/formattting the 'option' json object into st_echarts.
-            Definitely check the echarts example page, convert the JSON specs to Python Dicts and you should get a nice viz."""
-            )
-        if selected_api == "pyecharts":
-            st.caption(
-                """Pyecharts demos are extracted from https://github.com/pyecharts/pyecharts-gallery,
-            by copying the pyecharts object into st_pyecharts. 
-            Pyecharts is still using ECharts 4 underneath, which is why the theming between st_echarts and st_pyecharts is different."""
-            )
+    # Calculate the counts for each progress category
+    progress_counts = data['Remark Progress Belajar'].value_counts()
 
-    demo()
+    # Create a pie chart
+    fig, ax = plt.subplots()
+    ax.pie(progress_counts, labels=progress_counts.index, autopct='%1.1f%%', startangle=90,textprops={'color': 'white'})
+    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
-    sourcelines, _ = inspect.getsourcelines(demo)
-    with st.expander("Source Code"):
-        st.code(textwrap.dedent("".join(sourcelines[1:])))
-    st.markdown(f"Credit: {url}")
+    # Set the background color of the figure to transparent
+    fig.patch.set_facecolor('none')
+    fig.patch.set_alpha(0)
 
+    # Display the pie chart in Streamlit
+    st.pyplot(fig)
 
+    # Add interactivity: Allow user to filter data based on 'Remark Progress Belajar'
+    st.write("### Filter Data by Progress Remark")
+    selected_remark = st.selectbox("Select a Progress Remark", data['Remark Progress Belajar'].unique())
+
+    # Filter the data based on the selected remark
+    filtered_data = data[data['Remark Progress Belajar'] == selected_remark]
+
+    # Display the filtered data
+    st.write(f"### Data for {selected_remark}")
+    st.write(filtered_data)
+
+# Run the app
 if __name__ == "__main__":
-    st.set_page_config(
-        page_title="Streamlit ECharts Demo", page_icon=":chart_with_upwards_trend:"
-    )
     main()
-    with st.sidebar:
-        st.markdown("---")
-        st.markdown(
-            '<h6>Made in &nbsp<img src="https://streamlit.io/images/brand/streamlit-mark-color.png" alt="Streamlit logo" height="16">&nbsp by <a href="https://twitter.com/andfanilo">@andfanilo</a></h6>',
-            unsafe_allow_html=True,
-        )
-        st.markdown(
-            '<div style="margin-top: 0.75em;"><a href="https://www.buymeacoffee.com/andfanilo" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a></div>',
-            unsafe_allow_html=True,
-        )
