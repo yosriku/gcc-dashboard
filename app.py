@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+from datetime import datetime
 
 # Load the data from the CSV file
 @st.cache_data
@@ -9,8 +10,26 @@ def load_data():
     data = data[['Nama Peserta', 'Jumlah Course yang Telah Diselesaikan', 'Progress Belajar Percentage','Remark Progress Belajar']]
     return data
 
+# Function to calculate the countdown
+def countdown(target_date):
+    now = datetime.now()
+    time_left = target_date - now
+    days = time_left.days
+    hours, remainder = divmod(time_left.seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    return days, hours, minutes, seconds
+
 # Main function to run the Streamlit app
 def main():
+    # Set target date for countdown (28 February 23:59)
+    target_date = datetime(2025, 2, 28, 23, 59, 0)  # Ganti tahun sesuai kebutuhan
+
+    # Calculate countdown
+    days_left, hours_left, minutes_left, seconds_left = countdown(target_date)
+
+    # Display countdown at the top
+    st.write(f"### Waktu Tersisa Hingga Program Berakhir: {days_left}d {hours_left}h {minutes_left}m")
+
     st.title("Progress Belajar Peserta Advanced Data Analytics")
 
     # Load the data
@@ -24,7 +43,7 @@ def main():
 
     # Create a pie chart
     fig, ax = plt.subplots()
-    ax.pie(progress_counts, labels=progress_counts.index, autopct='%1.1f%%', startangle=90,textprops={'color': 'white'})
+    ax.pie(progress_counts, labels=progress_counts.index, autopct='%1.1f%%', startangle=90, textprops={'color': 'white'})
     ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
     # Set the background color of the figure to transparent
@@ -44,6 +63,15 @@ def main():
     # Display the filtered data
     st.write(f"### Data untuk {selected_remark}")
     st.write(filtered_data)
+
+    # Tambahkan informasi tambahan di bawah tabel
+    st.write("### Informasi Tambahan")
+    st.markdown("""
+    - **Rekomendasi course saat ini adalah telah menyelesaikan course bagian 5 "Google Advanced Data Analytics Capstone"**
+    - **Panduan Peserta:** [Link Panduan Peserta](https://docs.google.com/document/d/1lmDdTRtfZdrdRBXlYXOaN56pKj0qNFvEM_EbW-LOn_U/edit?usp=sharing)
+    - **Cek Sertifikat:** [Link Cek Sertifikat](https://www.coursera.org/accomplishments)
+    - **Jika ada kesalahan nama pada sertifikat, silahkan mengisi form di link berikut:** [Link Form Ganti Nama](https://coursera.support/s/learner-help-center-contact-us)
+    """)
 
 # Run the app
 if __name__ == "__main__":
