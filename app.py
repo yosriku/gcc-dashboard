@@ -7,7 +7,7 @@ from datetime import datetime
 @st.cache_data
 def load_data():
     data = pd.read_csv('data.csv')
-    data = data[['Nama Peserta', 'Jumlah Course yang Telah Diselesaikan', 'Progress Belajar Percentage','Remark Progress Belajar']]
+    data = data[['Nama Peserta', 'Jumlah Course yang Telah Diselesaikan', 'Progress Belajar Percentage', 'Remark Progress Belajar']]
     return data
 
 # Function to calculate the countdown
@@ -21,11 +21,14 @@ def countdown(target_date):
 
 # Main function to run the Streamlit app
 def main():
+    # Menampilkan Last Updated di bagian atas dengan teks kecil
+    st.markdown(f"<p style='font-size:12px; text-align:right; color:gray;'>Last Updated: 10-02-2025 at 08.30 WIB </p>", unsafe_allow_html=True)
+
     # Set target date for countdown (28 February 23:59)
-    target_date = datetime(2025, 2, 28, 23, 59, 0)  # Ganti tahun sesuai kebutuhan
+    target_date = datetime(2025, 2, 28, 23, 59, 0)  
 
     # Calculate countdown
-    days_left, hours_left, minutes_left, seconds_left = countdown(target_date)
+    days_left, hours_left, minutes_left, _ = countdown(target_date)
 
     # Display countdown at the top
     st.write(f"### Waktu Tersisa Hingga Program Berakhir: {days_left}d {hours_left}h {minutes_left}m")
