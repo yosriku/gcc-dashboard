@@ -44,9 +44,24 @@ def main():
     # Calculate the counts for each progress category
     progress_counts = data['Remark Progress Belajar'].value_counts()
 
+    # labels = ['Sudah Lulus Spesialisasi','Progress Sesuai/Diatas Rekomendasi','Progress Dibawah Rekomendasi','Belum Berprogress','Belum Enroll']
+    labels = ['Sudah Lulus Spesialisasi','Progress Dibawah Rekomendasi','Belum Berprogress','Belum Enroll']
+
+    # Warna sesuai kategori remark
+    colours = {
+        'Sudah Lulus Spesialisasi': 'C1',   # Warna Hijau
+        # 'Progress Sesuai/Diatas Rekomendasi': 'C1',   # Warna Biru
+        'Progress Dibawah Rekomendasi': 'C2', # Warna Kuning
+        'Belum Berprogress': 'C3',     # Warna Merah
+        'Belum Enroll': 'C4'          # Warna Abu-abu
+    }
+
     # Create a pie chart
     fig, ax = plt.subplots()
-    ax.pie(progress_counts, labels=progress_counts.index, autopct='%1.1f%%', startangle=90, textprops={'color': 'white'})
+    ax.pie(progress_counts, labels=progress_counts.index, 
+           autopct=lambda p: f'{p:.1f}%\n({int(p*sum(progress_counts)/100)})',
+           startangle=90, textprops={'fontsize': 12, 'color': 'white'}, 
+        colors=[colours[key] for key in labels])
     ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
     # Set the background color of the figure to transparent
