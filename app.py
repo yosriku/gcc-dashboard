@@ -49,10 +49,10 @@ def main():
 
     # Warna sesuai kategori remark
     colours = {
-        'Sudah Lulus Spesialisasi': 'C1',   # Warna Hijau
+        'Sudah Lulus Spesialisasi': 'C2',   # Warna Hijau
         # 'Progress Sesuai/Diatas Rekomendasi': 'C1',   # Warna Biru
-        'Progress Dibawah Rekomendasi': 'C2', # Warna Kuning
-        'Belum Berprogress': 'C3',     # Warna Merah
+        'Progress Dibawah Rekomendasi': 'C3', # Warna Kuning
+        'Belum Berprogress': 'C1',     # Warna Merah
         'Belum Enroll': 'C4'          # Warna Abu-abu
     }
 
