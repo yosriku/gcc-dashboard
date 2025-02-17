@@ -85,7 +85,7 @@ def main():
     # Tambahkan informasi tambahan di bawah tabel
     st.write("### Informasi Tambahan")
     st.markdown("""
-    - **Rekomendasi course saat ini adalah telah menyelesaikan course bagian 5 "Google Advanced Data Analytics Capstone"**
+    - **Rekomendasi course saat ini adalah telah menyelesaikan course bagian 6 "The Nuts and Bolts of Machine Learning"**
     - **Panduan Peserta:** [Link Panduan Peserta](https://docs.google.com/document/d/1lmDdTRtfZdrdRBXlYXOaN56pKj0qNFvEM_EbW-LOn_U/edit?usp=sharing)
     - **Cek Sertifikat:** [Link Cek Sertifikat](https://www.coursera.org/accomplishments)
     - **Jika ada kesalahan nama pada sertifikat, silahkan mengisi form di link berikut:** [Link Form Ganti Nama](https://coursera.support/s/learner-help-center-contact-us)
