@@ -24,8 +24,8 @@ def main():
     # Menampilkan Last Updated di bagian atas dengan teks kecil
     st.markdown(f"<p style='font-size:12px; text-align:right; color:gray;'>Last Updated: 25-02-2025 at 08.30 WIB </p>", unsafe_allow_html=True)
 
-    # Set target date for countdown (28 February 23:59)
-    target_date = datetime(2025, 2, 28, 23, 59, 0)  
+    # Set target date for countdown (16 March 23:59)
+    target_date = datetime(2025, 3, 16, 23, 59, 0)  
 
     # Calculate countdown
     days_left, hours_left, minutes_left, _ = countdown(target_date)
