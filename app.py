@@ -22,7 +22,7 @@ def countdown(target_date):
 # Main function to run the Streamlit app
 def main():
     # Menampilkan Last Updated di bagian atas dengan teks kecil
-    st.markdown(f"<p style='font-size:12px; text-align:right; color:gray;'>Last Updated: 25-02-2025 at 08.30 WIB </p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='font-size:12px; text-align:right; color:gray;'>Last Updated: 27-02-2025 at 08.30 WIB </p>", unsafe_allow_html=True)
 
     # Set target date for countdown (16 March 23:59)
     target_date = datetime(2025, 3, 16, 23, 59, 0)  
@@ -85,7 +85,7 @@ def main():
     # Tambahkan informasi tambahan di bawah tabel
     st.write("### Informasi Tambahan")
     st.markdown("""
-    - **Rekomendasi course saat ini adalah telah menyelesaikan course bagian 6 "The Nuts and Bolts of Machine Learning"**
+    - **Rekomendasi course saat ini adalah telah menyelesaikan course bagian 7 "Google Advance Data Analytics Capstone"**
     - **Panduan Peserta:** [Link Panduan Peserta](https://docs.google.com/document/d/1lmDdTRtfZdrdRBXlYXOaN56pKj0qNFvEM_EbW-LOn_U/edit?usp=sharing)
     - **Cek Sertifikat:** [Link Cek Sertifikat](https://www.coursera.org/accomplishments)
     - **Jika ada kesalahan nama pada sertifikat, silahkan mengisi form di link berikut:** [Link Form Ganti Nama](https://coursera.support/s/learner-help-center-contact-us)
