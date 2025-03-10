@@ -22,7 +22,7 @@ def countdown(target_date):
 # Main function to run the Streamlit app
 def main():
     # Menampilkan Last Updated di bagian atas dengan teks kecil
-    st.markdown(f"<p style='font-size:12px; text-align:right; color:gray;'>Last Updated: 27-02-2025 at 08.30 WIB </p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='font-size:12px; text-align:right; color:gray;'>Last Updated: 10-03-2025 at 08.30 WIB </p>", unsafe_allow_html=True)
 
     # Set target date for countdown (16 March 23:59)
     target_date = datetime(2025, 3, 16, 23, 59, 0)  
@@ -51,8 +51,8 @@ def main():
     colours = {
         'Sudah Lulus Spesialisasi': 'C2',   # Warna Hijau
         # 'Progress Sesuai/Diatas Rekomendasi': 'C1',   # Warna Biru
-        'Progress Dibawah Rekomendasi': 'C3', # Warna Kuning
-        'Belum Berprogress': 'C1',     # Warna Merah
+        'Progress Dibawah Rekomendasi': 'C1', # Warna Kuning
+        'Belum Berprogress': 'C3',     # Warna Merah
         'Belum Enroll': 'C4'          # Warna Abu-abu
     }
 
